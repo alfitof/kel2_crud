@@ -1,5 +1,10 @@
-import '@/styles/globals.css'
+import "@/styles/globals.css";
+import { EditProvider } from "@/context/EditContext";
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <EditProvider>
+      <Component {...pageProps} />
+    </EditProvider>
+  );
 }
