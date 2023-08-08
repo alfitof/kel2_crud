@@ -1,6 +1,10 @@
 import React from "react";
 
-const ModalDelete = ({ formData, handleModalDeleteClose }) => {
+const ModalDelete = ({
+  formData,
+  handleModalDeleteClose,
+  handleDeleteProduct,
+}) => {
   return (
     <div className=" flex bg-black bg-opacity-60 h-screen items-center justify-center  fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
       <div className="relative w-full max-w-md max-h-full">
@@ -19,9 +23,9 @@ const ModalDelete = ({ formData, handleModalDeleteClose }) => {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
               />
             </svg>
@@ -37,7 +41,7 @@ const ModalDelete = ({ formData, handleModalDeleteClose }) => {
               </h1>
               <div className="flex justify-between">
                 <button
-                  // onClick={handleModalDeleteClose}
+                  onClick={() => handleDeleteProduct(formData.productId)}
                   className="w-[45%]  text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                 >
                   Delete

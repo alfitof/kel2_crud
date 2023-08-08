@@ -29,15 +29,34 @@ function Home() {
     fetchProducts();
   }, []);
 
-  const handleModalDeleteOpen = (productName) => {
+  const handleModalDeleteOpen = (productId, productName) => {
     setIsDeleteModalOpen(true);
-    setFormData({ ...formData, title: productName });
+    setFormData({ ...formData, title: productName, id: productId });
     document.body.style.overflow = "hidden";
   };
 
   const handleModalDeleteClose = () => {
     setIsDeleteModalOpen(false);
     document.body.style.overflow = "auto";
+  };
+
+  const handleDeleteProduct = () => {
+    axios
+      .delete(`https://dummyjson.com/products/${formData.id}`)
+      .then((res) => {
+        const updatedProduct = {
+          ...res.data,
+          isDeleted: true,
+        };
+        console.log("Product deleted successfully", updatedProduct);
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== formData.id)
+        );
+        handleModalDeleteClose();
+      })
+      .catch((err) => {
+        console.error("Error deleting product:", err);
+      });
   };
 
   return (
@@ -66,6 +85,7 @@ function Home() {
           <ModalDelete
             handleModalDeleteClose={handleModalDeleteClose}
             formData={formData}
+            handleDeleteProduct={handleDeleteProduct}
           />
         )}
       </div>

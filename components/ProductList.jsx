@@ -16,6 +16,7 @@ const ProductList = ({ products, handleModalDeleteOpen }) => {
                 src={item.thumbnail}
                 width={2000}
                 height={2000}
+                alt="product"
                 className="object-cover rounded-lg w-full h-full max-h-lg mx-auto lg:max-w-full"
               />
             </div>
@@ -41,7 +42,7 @@ const ProductList = ({ products, handleModalDeleteOpen }) => {
             <div className="flex justify-between">
               <button
                 className="border border-red-500 hover:bg-red-500 text-red-500 w-[45%] hover:text-white font-bold py-2 px-4 rounded"
-                onClick={() => handleModalDeleteOpen()}
+                onClick={() => handleModalDeleteOpen(item.id, item.title)}
               >
                 Remove
               </button>
