@@ -1,7 +1,55 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "@/components/Header";
+import { useRouter } from "next/router";
+import { useAddContext } from "@/context/AddContext";
 
 const Add = () => {
+  const router = useRouter();
+  const { setAddedProduct } = useAddContext();
+  const [id, setId] = useState("");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    fetch(`https://dummyjson.com/products/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setTitle(data.title);
+        setPrice(data.price);
+      })
+      .catch((error) => console.error(error));
+  }, [id]);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    const addProductData = {
+      id : id,
+      title: title,
+      price: parseFloat(price),
+    };
+
+    fetch(`https://dummyjson.com/products/add`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(addProductData),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Product added successfully", data);
+      setIsLoading(false);
+      setAddedProduct({
+        id: data.id,
+        title: addProductData.title,
+        price: addProductData.price,
+      });
+      router.push("/");
+    });
+  };
+
   return (
     <div className="bg-slate-500">
       <Header />
@@ -13,7 +61,7 @@ const Add = () => {
                 <h3 className="mb-6 mt-3 text-3xl font-medium text-gray-900 dark:text-white">
                   Add Product
                 </h3>
-                <form>
+                <form onSubmit={handleFormSubmit}>
                   <div>
                     <label
                       for="title"
@@ -25,6 +73,8 @@ const Add = () => {
                       type="text"
                       name="title"
                       id="title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
                       className="bg-gray-50 mt-5 border pl-5 border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter title here.."
                       required
@@ -40,6 +90,8 @@ const Add = () => {
                     <input
                       type="text"
                       name="price"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
                       id="price"
                       className="bg-gray-50 mt-5 border pl-5 border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                       placeholder="Enter price here.."
@@ -51,7 +103,7 @@ const Add = () => {
                     type="submit"
                     className="w-full py-3 text-lg mt-10 mb-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
-                    Save
+                    {isLoading ? "Saving..." : "Save"}
                   </button>
                 </form>
               </div>
