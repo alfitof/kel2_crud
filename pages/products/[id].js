@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Header from "@/components/Header";
 import { useEditContext } from "@/context/EditContext";
+import { useAddContext } from "@/context/AddContext";
 
 const EditPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { setEditedProduct } = useEditContext();
+  const { setAddedProduct, addedProduct } = useAddContext();
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -68,6 +70,18 @@ const EditPage = () => {
                     >
                       Title
                     </label>
+                    {addedProduct ? (
+                      <input
+                      type="text"
+                      name="title"
+                      id="title"
+                      value={addedProduct.title}
+                      onChange={(e) => setAddedProduct(e.target.value)}
+                      className="bg-gray-50 mt-5 border pl-5 border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter title here.."
+                      required
+                    />
+                    ) : (
                     <input
                       type="text"
                       name="title"
@@ -78,6 +92,7 @@ const EditPage = () => {
                       placeholder="Enter title here.."
                       required
                     />
+                  )}
                   </div>
                   <div>
                     <label
@@ -86,6 +101,18 @@ const EditPage = () => {
                     >
                       Price
                     </label>
+                    {addedProduct ? (
+                      <input
+                      type="text"
+                      name="price"
+                      id="price"
+                      value={addedProduct.price}
+                      onChange={(e) => setAddedProduct(e.target.value)}
+                      className="bg-gray-50 mt-5 border pl-5 border-gray-300 text-gray-900  rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                      placeholder="Enter price here.."
+                      required
+                    />
+                    ) : (
                     <input
                       type="text"
                       name="price"
@@ -96,6 +123,7 @@ const EditPage = () => {
                       placeholder="Enter price here.."
                       required
                     />
+                  )}
                   </div>
 
                   <button
