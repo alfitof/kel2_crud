@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import css from "../styles/Header.module.css";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [scrollActive, setScrollActive] = useState(false);
@@ -10,6 +10,12 @@ const Header = () => {
       setScrollActive(window.scrollY > 20);
     });
   }, []);
+
+  const router = useRouter()
+
+  const handleLogout = () => {
+    router.push('/login')
+  }
   return (
     <>
       <header className="fixed top-0 w-full  z-30  transition-all pt-4 bg-slate-700">
@@ -31,11 +37,11 @@ const Header = () => {
               <button
                 type="button"
                 className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                onClick={handleLogout}
               >
                 Logout
               </button>
             </div>
-            {/* <ButtonOutline>Sign Up</ButtonOutline> */}
           </div>
         </nav>
       </header>
